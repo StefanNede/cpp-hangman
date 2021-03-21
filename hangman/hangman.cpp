@@ -4,6 +4,30 @@
 
 using namespace std;
 
+// used to display the hangman
+void displayCurrentCorrect(int numberIncorrect)
+{
+	// hangman :
+	// "----\n
+	// |   |\n
+	// |   O\n
+	// |  -|-\n
+	// |   |\n
+	// |  | |\n
+	// ---------"
+	// string array to store the hangmen
+	string hangmen[6] = {
+		"----\n|   |\n|   O\n|  -|-\n|   |\n|  | |\n---------",
+		"----\n|   |\n|   O\n|  -|-\n|   |\n|\n---------",
+		"----\n|   |\n|   O\n|  -|-\n|\n|\n---------",
+		"----\n|   |\n|   O\n|   |\n|\n|\n---------",
+		"----\n|   |\n|   O\n|\n|\n|\n---------",
+		"----\n|   |\n|\n|\n|\n|\n---------",
+	};
+	int correspondingHangman = 6 - numberIncorrect;
+	cout << hangmen[correspondingHangman] << endl;
+}
+
 // getting the random number
 int generateRandomNumber(int length)
 {
@@ -52,21 +76,37 @@ int main()
 	cin >> name;
 	// welcoming the user to the game
 	cout << "Welcome to the game " << name << endl;
-	// main game loop
+	cout << "You have 6 lives" << endl;
+	// loop to start the game (generate the word)
 	while (true)
 	{
+		// variable to store the amount incorrect
+		int totalIncorrect = 0;
 		string word = generateWords();
 		cout << word << endl;
-		// if the boolean is true then it will result in a 1, 0 if it is false
-		bool result = getGuess(word);
-		if (result == 1)
+		// main game loop (getting the guess from the user and so on)
+		while (true)
 		{
-			cout << "correct" << endl;
+			if (totalIncorrect == 6)
+			{
+				cout << "You have lost :(" << endl;
+				return 0;
+			}
+			else
+			{
+				// if the boolean is true then it will result in a 1, 0 if it is false
+				bool result = getGuess(word);
+				if (result == 1)
+				{
+					cout << "correct" << endl;
+				}
+				else
+				{
+					cout << "incorrect" << endl;
+					totalIncorrect++;
+					displayCurrentCorrect(totalIncorrect);
+				}
+			}
 		}
-		else
-		{
-			cout << "incorrect" << endl;
-		}
-		return 0;
 	}
 }
